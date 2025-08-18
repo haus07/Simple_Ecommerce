@@ -28,6 +28,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import type { RootState } from '../app/store';
 import { setItems } from '../features/order/orderSlice';
 import { useOrdersByUserId } from '../hooks/order/useOrder';
+import { orderSilce } from './../features/order/orderSlice';
 
 // --- Interfaces ---
 
@@ -134,13 +135,10 @@ const UserProfilePage: React.FC = () => {
   };
 
   // Hàm định dạng ngày
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('vi-VN', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    });
-  };
+const formatDate = (dateString: string) => {
+  // `vi-VN` mặc định sẽ trả về định dạng `dd/mm/yyyy`
+  return new Date(dateString).toLocaleDateString('vi-VN');
+};
 
   const handleViewOrder = (order: any) => {
     setSelectedOrder(order);
@@ -160,16 +158,27 @@ const UserProfilePage: React.FC = () => {
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="text-4xl font-bold text-black mb-2">Hồ sơ người dùng</h1>
-            <p className="text-gray-600">Quản lý thông tin cá nhân và đơn hàng của bạn</p>
+            <h1 className="text-4xl font-bold text-black mb-2">Profile</h1>
+            <p className="text-gray-600">Your infomations and orders</p>
           </div>
+          <div className="flex items-center justify-between">
+          <button
+              onClick={() => {
+                navigate('/main')
+            }}
+            className="flex items-center space-x-2 px-4 py-2 border border-gray-300 hover:border-black hover:bg-black hover:text-white text-black hover:text-black rounded-lg transition-all duration-200 mr-10"
+            >
+            <LogOut className="w-5 h-5" />
+            <span>Homepage</span>
+          </button>
           <button
             onClick={logout}
-            className="flex items-center space-x-2 px-4 py-2 border border-gray-300 hover:border-black text-gray-700 hover:text-black rounded-lg transition-all duration-200"
-          >
+            className="flex items-center space-x-2 px-4 py-2 border border-gray-300 hover:border-black hover:bg-black hover:text-white text-black hover:text-black rounded-lg transition-all duration-200"
+            >
             <LogOut className="w-5 h-5" />
-            <span>Đăng xuất</span>
+            <span>Log Out</span>
           </button>
+              </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -188,7 +197,7 @@ const UserProfilePage: React.FC = () => {
                   </div>
                 </div>
                 <h2 className="text-2xl font-bold text-black mt-4 mb-2">{user.username}</h2>
-                <p className="text-gray-600">Thành viên từ {user.joinDate}</p>
+                <p className="text-gray-600">  {user.joinDate}</p>
               </div>
 
               <div className="space-y-6">
@@ -198,7 +207,7 @@ const UserProfilePage: React.FC = () => {
                       <User className="w-5 h-5 text-gray-600" />
                     </div>
                     <div>
-                      <p className="text-sm text-gray-500">Tên đăng nhập</p>
+                      <p className="text-sm text-gray-500">Username</p>
                       <p className="text-black font-semibold">{user.username}</p>
                     </div>
                   </div>
@@ -220,7 +229,7 @@ const UserProfilePage: React.FC = () => {
                       <Phone className="w-5 h-5 text-gray-600" />
                     </div>
                     <div>
-                      <p className="text-sm text-gray-500">Số điện thoại</p>
+                      <p className="text-sm text-gray-500">Phone</p>
                       <p className="text-black font-semibold">{user.phone}</p>
                     </div>
                   </div>
@@ -228,7 +237,7 @@ const UserProfilePage: React.FC = () => {
 
                 <button className="w-full bg-black hover:bg-gray-800 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300 flex items-center justify-center space-x-2">
                   <Edit2 className="w-5 h-5" />
-                  <span>Chỉnh sửa hồ sơ</span>
+                  <span>Edit your profile</span>
                 </button>
               </div>
             </div>
@@ -243,8 +252,8 @@ const UserProfilePage: React.FC = () => {
                       <ShoppingBag className="w-6 h-6 text-white" />
                     </div>
                     <div>
-                      <h3 className="text-2xl font-bold text-black">Đơn hàng của tôi</h3>
-                      <p className="text-gray-600">Tổng cộng {data?.total || 0} đơn hàng</p>
+                      <h3 className="text-2xl font-bold text-black">Orders</h3>
+                      <p className="text-gray-600">Total {data?.total || 0} orders</p>
                     </div>
                   </div>
                 </div>
@@ -259,7 +268,7 @@ const UserProfilePage: React.FC = () => {
                   </div>
                   <input
                     type="text"
-                    placeholder="Tìm kiếm theo mã đơn hàng..."
+                    placeholder="Looks your order here..."
                     value={searchInput}
                     onChange={(e) => setSearchInput(e.target.value)}
                     onKeyDown={handleSearch}
@@ -269,42 +278,42 @@ const UserProfilePage: React.FC = () => {
 
                 {/* Sort By Dropdown */}
                 <div className="w-full md:w-auto">
-                  <label htmlFor="sortBy" className="sr-only">Sắp xếp theo</label>
+                  <label htmlFor="sortBy" className="sr-only">Order by</label>
                   <select
                     id="sortBy"
                     value={sortBy}
                     onChange={(e) => setSortBy(e.target.value)}
                     className="w-full appearance-none border border-gray-300 text-black rounded-lg px-4 py-2 focus:outline-none focus:border-black transition-all duration-200"
                   >
-                    <option value="createdAt">Ngày đặt hàng</option>
-                    <option value="totalPrice">Tổng giá trị</option>
+                    <option value="createdAt">Order date</option>
+                    <option value="totalPrice">Total price</option>
                   </select>
                 </div>
 
                 {/* Sort Order Dropdown */}
                 <div className="w-full md:w-auto">
-                  <label htmlFor="sortOrder" className="sr-only">Thứ tự sắp xếp</label>
+                  <label htmlFor="sortOrder" className="sr-only">Sort by</label>
                   <select
                     id="sortOrder"
                     value={sortOrder}
                     onChange={(e) => setSortOrder(e.target.value)}
                     className="w-full appearance-none border border-gray-300 text-black rounded-lg px-4 py-2 focus:outline-none focus:border-black transition-all duration-200"
                   >
-                    <option value="desc">Giảm dần</option>
-                    <option value="asc">Tăng dần</option>
+                    <option value="desc">Descending</option>
+                    <option value="asc">Ascending</option>
                   </select>
                 </div>
                 
                 {/* Status Filter Dropdown */}
                 <div className="w-full md:w-auto">
-                  <label htmlFor="statusFilter" className="sr-only">Lọc theo trạng thái</label>
+                  <label htmlFor="statusFilter" className="sr-only">Status filtes</label>
                   <select
                     id="statusFilter"
                     value={statusFilter}
                     onChange={(e) => setStatusFilter(e.target.value)}
                     className="w-full appearance-none border border-gray-300 text-black rounded-lg px-4 py-2 focus:outline-none focus:border-black transition-all duration-200"
                   >
-                    <option value="all">Tất cả</option>
+                    <option value="all">All</option>
                     <option value="pending">Pending</option>
                     <option value="wait for paid">Wait for paid</option>
                     <option value="confirmed">Confirmed</option>
@@ -317,11 +326,11 @@ const UserProfilePage: React.FC = () => {
 
               {/* Orders List */}
               <div className="p-6 space-y-4 max-h-96 overflow-y-auto">
-                {isLoading && <div className="text-center py-8 text-gray-600">Đang tải đơn hàng...</div>}
+                {isLoading && <div className="text-center py-8 text-gray-600">Loading...</div>}
                 {isError && <div className="text-center py-8 text-red-600">Lỗi: {(error as Error).message}</div>}
                 {!isLoading && !isError && orders.length === 0 && (
                   <div className="text-center py-8">
-                    <p className="text-gray-600">Không có đơn hàng nào.</p>
+                    <p className="text-gray-600">Looks like the order book is empty</p>
                   </div>
                 )}
                 {!isLoading && orders.length > 0 && (
@@ -369,7 +378,8 @@ const UserProfilePage: React.FC = () => {
                           </div>
                         )}
                         <span className="text-sm text-gray-600 ml-2">
-                          {order.items?.length} sản phẩm
+                          {order.items?.length === 1 ?
+                          order.items?.length + ' product':order.items?.length+' products'}
                         </span>
                       </div>
 
@@ -378,7 +388,7 @@ const UserProfilePage: React.FC = () => {
                         className="w-full border border-gray-300 hover:border-black text-gray-700 hover:text-black py-2 px-4 rounded-lg transition-all duration-200 flex items-center justify-center space-x-2"
                       >
                         <Eye className="w-4 h-4" />
-                        <span>Xem chi tiết</span>
+                        <span>Click for details</span>
                       </button>
                     </div>
                   ))
@@ -394,7 +404,7 @@ const UserProfilePage: React.FC = () => {
                 >
                   <ChevronLeft className="w-5 h-5" />
                 </button>
-                <span className="text-black">Trang {page} / {totalPages}</span>
+                <span className="text-black">Page {page} / {totalPages}</span>
                 <button
                   onClick={() => handlePageChange(page + 1)}
                   disabled={page === totalPages || isLoading}
@@ -412,7 +422,7 @@ const UserProfilePage: React.FC = () => {
             <div className="bg-white border border-gray-200 rounded-lg shadow-lg max-w-2xl w-full max-h-[80vh] overflow-y-auto">
               <div className="p-6">
                 <div className="flex items-center justify-between mb-6">
-                  <h3 className="text-2xl font-bold text-black">Chi tiết đơn hàng</h3>
+                  <h3 className="text-2xl font-bold text-black">Order details</h3>
                   <button
                     onClick={() => setShowOrderDetails(false)}
                     className="text-gray-600 hover:text-black transition-colors"
@@ -423,16 +433,16 @@ const UserProfilePage: React.FC = () => {
                 <div className="space-y-4">
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <p className="text-gray-500 text-sm">Mã đơn hàng</p>
+                      <p className="text-gray-500 text-sm">Order Id</p>
                       <p className="text-black font-semibold">#{selectedOrder.orderCode}</p>
                     </div>
                     <div>
-                      <p className="text-gray-500 text-sm">Ngày đặt</p>
+                      <p className="text-gray-500 text-sm">Order date</p>
                       <p className="text-black font-semibold">{formatDate(selectedOrder.createdAt)}</p>
                     </div>
                   </div>
                   <div className="border-t border-gray-200 pt-4">
-                    <h4 className="text-black font-semibold mb-3">Sản phẩm đã đặt</h4>
+                    <h4 className="text-black font-semibold mb-3">Your order</h4>
                     <div className="space-y-3">
                       {selectedOrder.items?.map((item: any) => (
                         <div key={item.id} className="flex items-center space-x-4 bg-gray-50 border border-gray-200 p-3 rounded-lg">
@@ -443,7 +453,7 @@ const UserProfilePage: React.FC = () => {
                           />
                           <div className="flex-1">
                             <p className="text-black font-medium">{item.product.title}</p>
-                            <p className="text-gray-600 text-sm">Số lượng: {item.quantity}</p>
+                            <p className="text-gray-600 text-sm">Quantity: {item.quantity}</p>
                           </div>
                           <p className="text-black font-semibold">${(Number(item.product.price) * Number(item.quantity)).toFixed(2)}</p>
                         </div>
@@ -451,7 +461,7 @@ const UserProfilePage: React.FC = () => {
                     </div>
                   </div>
                   <div className="border-t border-gray-200 pt-4 flex justify-between items-center">
-                    <span className="text-xl font-bold text-black">Tổng cộng:</span>
+                    <span className="text-xl font-bold text-black">Total:</span>
                     <span className="text-2xl font-bold text-black">${Number(selectedOrder.totalPrice).toFixed(2)}</span>
                   </div>
                 </div>

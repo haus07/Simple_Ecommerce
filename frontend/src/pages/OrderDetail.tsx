@@ -107,8 +107,8 @@ const OrderDetail: React.FC<OrderDetailProps> = ({
       <div className="max-w-4xl mx-auto">
         {/* Success Header */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-green-100 rounded-full mb-4">
-            <CheckCircle className="w-8 h-8 text-green-600" />
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-black rounded-full mb-4">
+            <CheckCircle className="w-8 h-8 text-white" />
           </div>
           <h1 className="text-3xl font-bold text-gray-900 mb-2">Order Confirmed!</h1>
           <p className="text-lg text-gray-600">Thank you for your purchase. Your order has been successfully placed.</p>
@@ -124,19 +124,19 @@ const OrderDetail: React.FC<OrderDetailProps> = ({
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {/* Order Number */}
               <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                  <Package className="w-5 h-5 text-blue-600" />
+                <div className="w-10 h-10 bg-gray-200 rounded-lg flex items-center justify-center">
+                  <Package className="w-5 h-5 text-black" />
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-gray-500">Order Number</p>
+                  <p className="text-sm font-medium text-black">Order Number</p>
                   <p className="text-lg font-semibold text-gray-900">{orderItems.orderCode}</p>
                 </div>
               </div>
     
               {/* Order Date */}
               <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
-                  <Calendar className="w-5 h-5 text-purple-600" />
+                <div className="w-10 h-10 bg-gray-200 rounded-lg flex items-center justify-center">
+                  <Calendar className="w-5 h-5 text-black" />
                 </div>
                 <div>
                   <p className="text-sm font-medium text-gray-500">Order Date</p>
@@ -146,11 +146,11 @@ const OrderDetail: React.FC<OrderDetailProps> = ({
 
               {/* Status */}
               <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
+                <div className="w-10 h-10 bg-gray-200 rounded-lg flex items-center justify-center">
                   {getStatusIcon(orderItems.status)}
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-gray-500">Status</p>
+                  <p className="text-sm font-medium text-black">Status</p>
                   <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium border ${getStatusColor(orderItems.status)}`}>
                     { orderItems.status.charAt(0).toUpperCase() + orderItems.status.slice(1)}
                   </span>
@@ -209,12 +209,12 @@ const OrderDetail: React.FC<OrderDetailProps> = ({
 
         {/* Action Buttons */}
         <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
-          <button className="px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+          <button className="px-6 py-3 bg-black text-white font-medium rounded-lg  transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
             Track Your Order
           </button>
           <button onClick={() => {
             navigate('/main')
-          }} className="px-6 py-3 bg-white text-gray-700 font-medium rounded-lg border border-gray-300 hover:bg-gray-50 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+          }} className="px-6 py-3 bg-black text-white font-medium rounded-lg border border-gray-300transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2">
             Continue Shopping
           </button>
         </div>

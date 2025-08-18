@@ -74,13 +74,7 @@ const MainContent = () => {
                     </div>
                     
                     {/* Results Count */}
-                    <div className="text-sm text-gray-500">
-                        {filteredProducts?.length > 0 && (
-                            <span className="bg-gray-100 px-3 py-1 rounded-full">
-                                {filteredProducts.length} products found
-                            </span>
-                        )}
-                    </div>
+                   
                 </div>
 
                 {/* Loading State */}
@@ -176,11 +170,7 @@ const MainContent = () => {
                 )}
 
                 {/* Page Info */}
-                {totalPages > 1 && (
-                    <div className="text-center text-sm text-gray-500">
-                        Page {page} of {totalPages}
-                    </div>
-                )}
+               
             </div>
         </section>
     )

@@ -39,7 +39,7 @@ const BookCard: React.FC<BookCardProbs> = ({ id, title, image, price }) => {
 
   return (
     <div className="bg-white border-2 border-gray-100 rounded-2xl p-5 shadow-sm hover:shadow-lg hover:border-black transition-all duration-300 flex flex-col justify-between group">
-      <Link to={`/products/${id}`} className="block">
+      <Link to={`/product/${id}`} className="block">
         <div className="relative overflow-hidden rounded-xl mb-4 bg-gray-50">
           <img
             src={image}

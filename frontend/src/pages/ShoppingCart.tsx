@@ -119,9 +119,7 @@ export default function ShoppingCart() {
     const price = parseFloat(item.product.price) || 0;
     return sum + price * item.quantity;
   }, 0);
-  const shippingFee = subtotal > 50 ? 0 : 9.99;
-  const tax = subtotal * 0.08;
-  const total = subtotal + shippingFee + tax;
+  const total = subtotal 
 
   const allSelected = cartItems.length > 0 && cartItems.every(item => item.selected);
   const handleCheckout = async () => {
@@ -232,18 +230,18 @@ export default function ShoppingCart() {
                     </h3>
                     <div className="text-xs text-gray-500 mb-2">
                       <div className="flex items-center space-x-1 mb-1">
-                        <ShieldCheck className="h-3 w-3 text-green-500" />
-                        <span>{item.seller || 'Unknown Seller'}</span>
+                        <ShieldCheck className="h-3 w-3 text-black" />
+                        <span>{item.product.brand || 'Unknown Seller'}</span>
                       </div>
                       <div className="space-y-1">
-                        <div className="text-green-600">{item.product?.brand}</div>
+                        <div className="text-black">{item.product?.brand}</div>
                       </div>
                     </div>
 
                     <div className="flex items-center justify-between">
                       {/* Price */}
                       <div className="flex items-center space-x-2">
-                        <span className="text-lg font-semibold text-orange-500">
+                        <span className="text-lg font-semibold text-black">
                           ${Number(item.product?.price).toFixed(2)}
                         </span>
                       </div>
@@ -303,50 +301,30 @@ export default function ShoppingCart() {
                     <span className="font-medium">${subtotal.toFixed(2)}</span>
                   </div>
 
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Tax (8%)</span>
-                    <span className="font-medium">${tax.toFixed(2)}</span>
-                  </div>
+                 
 
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Shipping Fee</span>
-                    <span className={`font-medium ${shippingFee === 0 ? 'text-green-600' : ''}`}>
-                      {shippingFee === 0 ? 'Free' : `$${shippingFee.toFixed(2)}`}
-                    </span>
-                  </div>
+                  
 
                   <hr className="my-3" />
 
                   <div className="flex justify-between text-lg font-semibold">
                     <span>Total</span>
-                    <span className="text-orange-500">${total.toFixed(2)}</span>
+                    <span className="text-black">${total.toFixed(2)}</span>
                   </div>
                 </div>
 
                 <button
                   onClick={handleCheckout}
-                  className="w-full bg-orange-500 text-white py-3 px-4 rounded-lg font-medium hover:bg-orange-600 transition-colors mt-6"
+                  className="w-full bg-black text-white py-3 px-4 rounded-lg font-medium cursor-pointer transition-colors mt-6"
                   disabled={selectedItems.length === 0}
                 >
                   Checkout ({selectedItems.length})
                 </button>
 
                 {/* Free Shipping Banner */}
-                {subtotal < 50 && (
-                  <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
-                    <div className="text-sm text-blue-700 font-medium">🚚 Free Shipping</div>
-                    <div className="text-xs text-blue-600">
-                      Add ${(50 - subtotal).toFixed(2)} more for free shipping
-                    </div>
-                  </div>
-                )}
+                
 
-                {subtotal >= 50 && (
-                  <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded-lg">
-                    <div className="text-sm text-green-700 font-medium">✅ Free Shipping Applied</div>
-                    <div className="text-xs text-green-600">You qualify for free shipping!</div>
-                  </div>
-                )}
+                
               </div>
             </div>
           )}

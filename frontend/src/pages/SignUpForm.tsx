@@ -49,10 +49,10 @@ const SignUpForm: React.FC = () => {
     }
   };
 
-  return (
+    return (
     <div style={containerStyle}>
       <form onSubmit={handleSubmit} style={formStyle}>
-        <h2 style={{ textAlign: 'center', color:'blue' }}>Đăng ký</h2>
+        <h2 style={{ textAlign: 'center', color: '#1a1a1a' }}>Đăng ký</h2>
         <input
           type="text"
           name="username"
@@ -92,7 +92,7 @@ const SignUpForm: React.FC = () => {
         <button type="submit" style={buttonStyle} disabled={loading}>
           {loading ? 'Đang xử lý...' : 'Đăng ký'}
         </button>
-         <p style={loginTextStyle}>
+        <p style={loginTextStyle}>
           Bạn đã có tài khoản?{' '}
           <button type="button" onClick={handleLoginRedirect} style={loginButtonStyle}>
             Đăng nhập
@@ -106,61 +106,64 @@ const SignUpForm: React.FC = () => {
 export default SignUpForm;
 
 // Styles
-const containerStyle: React.CSSProperties = {
+const containerStyle = {
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
   height: '100vh',
-  width:'100vw',
-  backgroundColor: '#3a3a3a',
+  width: '100vw',
+  backgroundColor: '#f5f5f5',
 };
 
-const formStyle: React.CSSProperties = {
+const formStyle = {
   width: '100%',
   maxWidth: '400px',
-  padding: '20px',
-  border: '1px solid #ccc',
-  borderRadius: '10px',
+  padding: '30px',
+  border: '1px solid #e0e0e0',
+  borderRadius: '8px',
   backgroundColor: '#fff',
   display: 'flex',
   flexDirection: 'column',
-  gap: '12px',
-  boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',
+  gap: '16px',
+  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.05)',
 };
 
-const inputStyle: React.CSSProperties = {
-  padding: '10px',
-  fontSize: '16px',
-  border: '1px solid #ddd',
-  borderRadius: '5px',
-};
-
-const buttonStyle: React.CSSProperties = {
+const inputStyle = {
   padding: '12px',
-  backgroundColor: '#007bff',
+  fontSize: '16px',
+  border: '1px solid #ccc',
+  borderRadius: '6px',
+  color: '#333',
+  transition: 'border-color 0.2s',
+};
+
+const buttonStyle = {
+  padding: '14px',
+  backgroundColor: '#1a1a1a',
   color: 'white',
   fontWeight: 'bold',
   border: 'none',
-  borderRadius: '5px',
+  borderRadius: '6px',
   cursor: 'pointer',
   fontSize: '16px',
+  transition: 'background-color 0.2s',
 };
 
-const loginButtonStyle: React.CSSProperties = {
+const loginButtonStyle = {
   background: 'none',
   border: 'none',
-  color: '#5267ff',
+  color: '#666',
   fontWeight: 'bold',
   textDecoration: 'underline',
   cursor: 'pointer',
-  fontSize: '0.9rem',
+  fontSize: '1rem',
   padding: '0',
   margin: '0',
 };
 
-const loginTextStyle: React.CSSProperties = {
+const loginTextStyle = {
   textAlign: 'center',
-  fontSize: '0.9rem',
+  fontSize: '1rem',
   color: '#666',
   marginTop: '10px',
 };
