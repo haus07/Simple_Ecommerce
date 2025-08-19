@@ -30,7 +30,7 @@ export class OrderService {
             where:{orderCode}
         })
         if (!order) {
-            throw new NotFoundException('Không tìm thấy đơn hàng o service')
+            throw new NotFoundException('Không tìm thấy đơn hàng')
         }
         return order
     }
@@ -84,7 +84,7 @@ export class OrderService {
             relations:['items.product']
         })
         if (!order) {
-            throw new NotFoundException('Khong tim thay don hang')
+            throw new NotFoundException('Không tìm thấy đơn hàng')
         }
         return order
     }
@@ -96,7 +96,7 @@ export class OrderService {
             })
 
             if (!order) {
-                throw new NotFoundException('Khong tim thay don hang')
+                throw new NotFoundException('Không tìm thấy đơn hàng')
             }
 
             order.status = update.status
