@@ -13,11 +13,11 @@ export class AuthService {
     async createUser(dto: RegisterDto) {
         const isExistEmail = await this.userService.IsEmailExist(dto.email)
         if (isExistEmail) {
-            throw new BadRequestException('Email nay da ton tai')
+            throw new BadRequestException('Email đã tồn tại vui lòng nhập lại')
         }
         const isUsernameExist = await this.userService.IsUserNameExist(dto.username)
         if (isUsernameExist) {
-            throw new BadRequestException('Username nay da ton tai')
+            throw new BadRequestException('Tên đăng nhập đã được sử dụng')
         }
         return await this.userService.create(dto)
     }
@@ -26,11 +26,11 @@ export class AuthService {
     async validate(username:string,pass:string): Promise<any> {
         const user = await this.userService.findByName(username)
         if (!user) {
-            throw new NotFoundException('Khong tim thay user')
+            throw new NotFoundException('Tên đăng nhập hoặc mật khẩu không đúng')
         }
         const matched = await comparePassword(pass, user.password)
         if (!matched) {
-            throw new UnauthorizedException('Username hoac ma khau khong dung')
+            throw new UnauthorizedException('Tên đăng nhập hoặc mật khẩu không đúng')
         }
         const { password, ...result } = user
         return result

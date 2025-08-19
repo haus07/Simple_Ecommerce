@@ -28,7 +28,7 @@ export class UserService {
    async create(data:RegisterDto) {
         const role = await this.roleRepo.findByName('user')
         if (!role) {
-                throw new NotFoundException("Khong co role nay")
+                throw new NotFoundException("Không có vai trò này")
             }
         const hash = await  hashPassword(data.password)    
        const dataSave = await this.userRespo.create({ ...data, password: hash, roles: [role] })
@@ -43,7 +43,7 @@ export class UserService {
         const roles= await this.roleRepo.findRoles(data.roles)
         const rolesName = roles?.map(role => role.name)??[]
         if (rolesName.length !== data.roles.length) {
-            throw new NotFoundException('Khong tim thay user tuong ung')
+            throw new NotFoundException('Khong tìm thấy vai trò tương ứng')
         }
         const hash = await hashPassword(data.password)
         const dataSave = await this.userRespo.create({
@@ -128,7 +128,7 @@ export class UserService {
 
     async updateUser(id: number, data: Partial<User>) {
         const user = await this.userRespo.findOneBy({ id })
-        if (!user) throw new NotFoundException('Khong tim thay user')
+        if (!user) throw new NotFoundException('Không tìm thấy người dùng')
         
         Object.assign(user, data)
         return await this.userRespo.save(user)

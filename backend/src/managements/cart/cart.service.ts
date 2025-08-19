@@ -59,17 +59,16 @@ export class CartService {
         })
 
         if (!cart) {
-            throw new NotFoundException('Khong tim thay gio hang ')
+            throw new NotFoundException('Không tìm thấy giỏ hàng')
         }
 
         const cartItem = cart.items.find(item => item.id === cartItemId)
         if (!cartItem) {
-            throw new NotFoundException('Khong tim thay san pham nay')
+            throw new NotFoundException('Không tìm thấy sản phẩm này')
         }
         console.log(quantity.quantity)
         if (quantity.quantity === 0) {
             await this.cartItemsRepo.delete(cartItemId)
-            console.log(cartItem)
         } else {
             cartItem.quantity = quantity.quantity
             await this.cartItemsRepo.save(cartItem)
