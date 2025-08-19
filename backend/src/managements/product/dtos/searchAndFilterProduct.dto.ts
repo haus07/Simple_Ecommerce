@@ -2,40 +2,40 @@ import { Type } from "class-transformer"
 import { IsEnum, IsIn, IsInt, IsNumberString, IsOptional, IsString, MinLength ,IsNumber} from "class-validator"
 
 export class SearchAndFilterProduct{
-        @IsString()
+        @IsString({message:'Tìm kiếm nên là chuỗi kí tự'})
         @IsOptional()
         searchQuery?: string
         
-        @IsNumberString()
+        @IsNumberString({},{message:'Trang nên là số'})
         @MinLength(1)
         @IsOptional()
         page?: string
         
-        @IsNumberString()
+        @IsNumberString({},{message:'Số trang giới hạn nên là số'})
         @IsOptional()
         limit?: string
         
-        @IsString()
-        @IsIn(['title', 'category', 'price', 'createdAt', 'updatedAt',''])
+        @IsString({message:'Sắp xếp theo nên là chuỗi kí tự'})
+        @IsIn(['title', 'category', 'price', 'createdAt', 'updatedAt',''],{message:'Sắp xếp theo nên thuộc các cột sau: title,category,price,createdAt,updatedAt'})
         @IsOptional()
         sortBy?: string
         
         
-        @IsString()
-        @IsIn(['asc', 'desc','default'])
+        @IsString({message:'Thứ tự sắp xếp nên là chuỗi kí tự'})
+        @IsIn(['asc', 'desc','default'],{message:'Thự tự săp xếp  : asc,desc,default'})
         @IsOptional()
         sortOrder?: string
         
-        @IsString()
+        @IsString({message:'Loại sản phẩm nên là chuỗi kí tự'})
         @IsOptional()
         categoryFilter?: string
 
-        @IsNumber()
+        @IsNumber({},{message:'Giá thấp nhât nên là số'})
         @IsOptional()
         @Type(()=>Number)
         minPrice?: number
         
-        @IsNumber()
+        @IsNumber({},{message:'Giá cao nhất nên là số'})
         @IsOptional()
         @Type(()=>Number)
         maxPrice?:number

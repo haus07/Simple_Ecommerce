@@ -11,7 +11,7 @@ export class AuthService {
     ) { }
 
     async createUser(dto: RegisterDto) {
-        const isExistEmail = await this.userService.IsEmailExist(dto.email)
+         const isExistEmail = await this.userService.IsEmailExist(dto.email)
         if (isExistEmail) {
             throw new BadRequestException('Email đã tồn tại vui lòng nhập lại')
         }
@@ -19,7 +19,15 @@ export class AuthService {
         if (isUsernameExist) {
             throw new BadRequestException('Tên đăng nhập đã được sử dụng')
         }
-        return await this.userService.create(dto)
+        try {
+            return await this.userService.create(dto)
+           
+       }catch(error){
+            if (error.code === '23505') {
+            throw new BadRequestException("Tên đăng nhập hoặc email đã tồn tại")
+            }
+            throw error
+       }
     }
 
 
