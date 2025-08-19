@@ -2,6 +2,7 @@ import { useState, useEffect } from "react"
 import { Edit, Trash2, ChevronLeft, ChevronRight, Search } from "lucide-react"
 import { useUsers, useUpdateUser } from "../../hooks/user/useUser";
 import EditUserModal from "../../modal/EditUserModal";
+import { useNavigate } from "react-router-dom";
 
 export interface User {
   id: number;
@@ -37,14 +38,26 @@ export default function AdminUserTable({
   // Hook gọi API với các tham số mới
   const { data, isLoading, isError } = useUsers(accessToken, page, limit, searchQuery, sortBy, sortOrder, statusFilter);
   const updateUserMutation = useUpdateUser(accessToken);
+  const navigate = useNavigate()
 
   const handleEdit = (u: User) => {
     setSelectedUser(u);
     setIsModalOpen(true);
   }
 
-  const handleSoftDelete = (id: number) => {
-    console.log("Soft delete user", id)
+  const handleSoftDelete = async (id: number) => {
+    try {
+      updateUserMutation.mutate({
+        id: id, body: {
+          status:'deactivated'
+        }
+      })
+      alert('Xoá người dùng thành công')
+    } catch(error) {
+      if (error.response.status === 401) {
+          navigate('/login')
+      }
+  }
   }
 
   const handlePageChange = (newPage: number) => {

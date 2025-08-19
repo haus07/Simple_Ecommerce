@@ -16,7 +16,7 @@ export default function AdminOrderTable({ accessToken }: AdminOrderTableProps) {
   const [searchQuery, setSearchQuery] = useState("");
 
   // State mới cho Sắp xếp
-  const [sortBy, setSortBy] = useState("orderDate");
+  const [sortBy, setSortBy] = useState("createdAt");
   const [sortOrder, setSortOrder] = useState("desc");
 
   // State mới cho Lọc trạng thái
@@ -155,7 +155,7 @@ export default function AdminOrderTable({ accessToken }: AdminOrderTableProps) {
               <tbody className="divide-y divide-white/10">
                 {orders.map((order: any) => (
                   <tr key={order.id} className="hover:bg-white/5 transition-colors duration-200">
-                    <td className="px-6 py-4 text-sm text-white">{order.id}</td>
+                    <td className="px-6 py-4 text-sm text-white">{order.orderCode}</td>
                     <td className="px-6 py-4 text-sm text-white font-medium">{order.user.username}</td>
                     <td className="px-6 py-4 text-sm text-gray-300">{order.user.phone}</td>
                     <td className="px-6 py-4 text-sm text-gray-300">${Number(order.totalPrice).toFixed(2)}</td>
