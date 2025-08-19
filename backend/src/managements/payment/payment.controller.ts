@@ -49,7 +49,7 @@ export class PaymentController {
     const { vnp_ResponseCode, vnp_TxnRef } = query
     const order = await this.orderService.getOrderByOrderCode(vnp_TxnRef)
     if (!order) {
-      throw new NotFoundException('Không tìm thấy đơn hàng o controller')
+      throw new NotFoundException('Không tìm thấy đơn hàng ')
     }
 
     const updateDtoSucceeded: UpdateOrderDto = { status: OrderStatus.SUCCEEDED }
