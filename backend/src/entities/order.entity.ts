@@ -37,7 +37,7 @@ export class Order{
       createdAt: Date
     
       @UpdateDateColumn()
-      updateAt: Date
+      updatedAt: Date
       
       @DeleteDateColumn()
       deletedAt?: Date

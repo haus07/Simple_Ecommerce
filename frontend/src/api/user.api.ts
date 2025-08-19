@@ -48,3 +48,17 @@ export const updateUser = async (
     })
     return response.data
 }
+
+export const softDeleteUser = async(
+    accessToken: string,
+    id: number) => {
+    const response = await api.patch(`api/v1/users/sort-delete/${id}`,
+        {
+            
+        },
+        {
+            headers: {Authorization:`Bearer ${accessToken}`}
+        }
+    )
+    return response.data
+    }

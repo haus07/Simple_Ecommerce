@@ -72,7 +72,7 @@ const LoginForm: React.FC = () => {
           if (hasAdminRole) {
             navigate('/admin', { replace: true });
           } else {
-            navigate('/user', { replace: true });
+            navigate('/main', { replace: true });
           }
         } catch (error) {
           if (error.response.status === 401) {

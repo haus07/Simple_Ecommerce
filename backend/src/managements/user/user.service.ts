@@ -100,7 +100,7 @@ export class UserService {
             if (sortBy && sortOrder) {
                 queryBuilder.orderBy(`user.${sortBy}`,sortOrder.toUpperCase() as 'DESC'|'ASC')
             } else {
-                queryBuilder.orderBy(`user.id`,'DESC')
+                queryBuilder.orderBy(`user.id`,'ASC')
             }
             queryBuilder.skip(skip).take(limit)
             const [data, total] = await queryBuilder.getManyAndCount()

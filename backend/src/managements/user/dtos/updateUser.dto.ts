@@ -1,4 +1,5 @@
-import { IsEmail, IsNotEmpty, IsOptional, IsPhoneNumber, IsString, MaxLength, MinLength } from 'class-validator'
+import { IsEmail, IsEnum, IsNotEmpty, IsOptional, IsPhoneNumber, IsString, MaxLength, MinLength } from 'class-validator'
+import { UserStatus } from 'src/common/enums/user-status.enum'
  
 export class UpdateUserDto{
 
@@ -13,5 +14,8 @@ export class UpdateUserDto{
     @IsPhoneNumber('VN',{message:'Số điện thoại phải theo định dạng Việt Nam'})
   @IsNotEmpty({ message: 'Số điện thoại không được để trống' })
       @IsOptional()
-    phone?: string
+  phone?: string
+  
+  @IsEnum(UserStatus)
+  status:UserStatus
 }
