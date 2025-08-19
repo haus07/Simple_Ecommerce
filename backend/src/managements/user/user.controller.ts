@@ -23,7 +23,7 @@ export class UserController {
     if (!user) {
       throw new UnauthorizedException('Nguoi dung khong ton tai')
     }
-    const { id,password, ...userWithoutPassword } = user
+    const { password, ...userWithoutPassword } = user
     return {
       userWithoutPassword
     }
@@ -49,7 +49,7 @@ async softDeleteUser(@Param('id', ParseIntPipe) id: number) {
   
 
   @UseGuards(AuthGuard('jwt'), RolesGuard)
-  @Roles('admin')
+  @Roles('admin','user')
   @Patch(':id')
   async editUser(@Param('id',ParseIntPipe) id: number,
                  @Body() body:UpdateUserDto) {

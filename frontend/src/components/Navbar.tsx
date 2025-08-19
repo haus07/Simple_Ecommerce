@@ -48,7 +48,9 @@ export default function Navbar() {
           <div className="flex items-center space-x-8 relative right-36 ">
             {/* Logo */}
             <div className="flex-shrink-0">
-              <h1 className="text-2xl font-bold text-gray-900 cursor-pointer hover:text-blue-600 transition-colors">
+              <h1 onClick={() => {
+                navigate('/main')
+              }} className="text-2xl font-bold text-gray-900 cursor-pointer hover:text-blue-600 transition-colors">
                 haus
               </h1>
             </div>  
@@ -122,7 +124,7 @@ export default function Navbar() {
             {/* Login */}
                       {user ? <button onClick={logout} className="flex items-center space-x-2 bg-black text-white px-4 py-2 rounded-lg  transition-colors font-medium">
                           <User className="h-4 w-4" />
-                          <span>LogOut</span>
+                          <span>Log out</span>
                       </button>
                           : (<button onClick={() => {
                           navigate('/login')
