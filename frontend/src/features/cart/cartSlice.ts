@@ -77,8 +77,16 @@ export const cartSlice = createSlice({
             const allSelected = state.items.every(item => item.selected)
             state.items = state.items.map(item=>({...item,selected:!allSelected}))
         },
-        increment(state, action) {
-            state.count += action.payload
+        increment(state, action:PayloadAction<{quantity:number,productId:number}>) {
+            console.log(action.payload.quantity)
+            console.log(action.payload.productId)
+            const product = state.items.find(item => item.product.id === action.payload.productId)
+            if (product){
+                return 
+            }
+            else {
+                state.count += action.payload.quantity
+            }
         },
         descrement(state, action) {
             state.count -= action.payload

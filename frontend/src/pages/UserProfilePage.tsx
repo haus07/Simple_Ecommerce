@@ -22,14 +22,15 @@ import {
   ChevronRight
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
-import { createSearchParams, useNavigate } from 'react-router-dom';
 import api from '../axios/axios';
 import { useDispatch, useSelector } from 'react-redux';
 import type { RootState } from '../app/store';
 import { setItems } from '../features/order/orderSlice';
 import { useOrdersByUserId } from '../hooks/order/useOrder';
 import { orderSilce } from './../features/order/orderSlice';
-
+import { useUsers,useUpdateUser } from '../hooks/user/useUser';
+import EditUserModal from '../modal/EditUserModal';
+import { useNavigate } from 'react-router-dom';
 // --- Interfaces ---
 
 interface UserProfile {
@@ -66,6 +67,14 @@ interface Order {
   status?: string;
   items?: OrderItem[];
 }
+ interface User {
+  id: number;
+  username: string;
+  email: string;
+  phone: string;
+  status: string;
+  roles?: { name: string }[];
+}
 
 const UserProfilePage: React.FC = () => {
   const { user, logout } = useAuth();
@@ -80,6 +89,16 @@ const UserProfilePage: React.FC = () => {
   const [sortOrder, setSortOrder] = useState('desc');
   const [statusFilter, setStatusFilter] = useState('all');
   const accessToken = localStorage.getItem('access_Token')
+  const handleEdit = (u: User) => {
+      setSelectedUser(u);
+      setIsModalOpen(true);
+  }
+  
+    const updateUserMutation = useUpdateUser(accessToken);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  
+  
   
   // Sử dụng custom hook đã tạo
   const { data, isLoading, isError, error, refetch } = useOrdersByUserId(
@@ -106,6 +125,7 @@ const UserProfilePage: React.FC = () => {
       setSearchQuery(searchInput);
     }
   };
+  console.log(user)
 
   const [selectedOrder, setSelectedOrder] = useState<any | null>(null);
   const [showOrderDetails, setShowOrderDetails] = useState(false);
@@ -235,7 +255,7 @@ const formatDate = (dateString: string) => {
                   </div>
                 </div>
 
-                <button className="w-full bg-black hover:bg-gray-800 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300 flex items-center justify-center space-x-2">
+                <button onClick={()=>handleEdit(user)} className="w-full bg-black hover:bg-gray-800 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300 flex items-center justify-center space-x-2">
                   <Edit2 className="w-5 h-5" />
                   <span>Edit your profile</span>
                 </button>
@@ -470,6 +490,13 @@ const formatDate = (dateString: string) => {
           </div>
         )}
       </div>
+       <EditUserModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        userData={selectedUser}
+        onUserUpdated={() => setIsModalOpen(false)}
+        updateUserMutation={()=>updateUserMutation}
+      />
     </div>
   );
 };

@@ -76,8 +76,8 @@ const OrderDetail: React.FC<OrderDetailProps> = ({
               return 'bg-green-100 text-green-800 border-green-200';
               case 'processing':
                   return 'bg-blue-100 text-blue-800 border-blue-200';
-                  case 'shipped':
-                      return 'bg-purple-100 text-purple-800 border-purple-200';
+                  case 'canceled':
+                      return 'bg-red-500 text-white border-purple-200';
                       case 'wait for paid':
                           return 'bg-amber-100 text-amber-800 border-amber-200';
                           default:
@@ -209,7 +209,7 @@ const OrderDetail: React.FC<OrderDetailProps> = ({
 
         {/* Action Buttons */}
         <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
-          <button className="px-6 py-3 bg-black text-white font-medium rounded-lg  transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+          <button onClick={() => { navigate('/user/profile') }} className="px-6 py-3 bg-black text-white font-medium rounded-lg  transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
             Track Your Order
           </button>
           <button onClick={() => {

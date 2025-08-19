@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { ShoppingCart } from "lucide-react";
 import api from "../axios/axios";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { increment, descrement } from "../features/cart/cartSlice";
 import type { RootState } from "../app/store";
 
@@ -28,7 +28,7 @@ const BookCard: React.FC<BookCardProbs> = ({ id, title, image, price }) => {
           Authorization: `Bearer ${accessToken}`,
         }
       });
-      dispatch(increment(1));
+      dispatch(increment({ quantity:1, productId:productId }));
       alert(response.data.message);
     } catch (error: any) {
       if (error.response.status === 401) {

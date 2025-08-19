@@ -140,6 +140,29 @@ export default function CheckoutPage() {
     }
   }
 
+  const handleCancelOrder = async () => {
+    try {
+      const accesToken = localStorage.getItem('access_Token')
+      if (!accesToken) {
+        navigate('/login')
+      }
+      const response = await api.patch(`api/v1/orders/${orderId}`, {
+        status:'canceled',
+      }, {
+        headers: { Authorization: `Bearer ${accesToken}` }
+      })
+      if (response.data.success === true) {
+        const newOrderId = response.data.order.id
+        navigate(`/checkout/done/${newOrderId}`)
+        dispatch(setItems(response.data.order))
+      }
+    } catch (error) {
+      if (error.response.status === 401) {
+        navigate('/login')
+      }
+    }
+  }
+
   return (
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="max-w-2xl mx-auto px-4">
@@ -209,10 +232,13 @@ export default function CheckoutPage() {
           {/* Continue Button */}
           <div className="bg-white rounded-xl shadow-lg p-6">
             <button onClick={handleDoneCheckout} className="w-full bg-black text-white py-4 px-6 rounded-xl font-semibold text-lg hover:bg-white hover:text-black hover:border-black border border-transparent transition-colors">
-              Continue to Payment
+              COD Payment
             </button>
              <button onClick={handleVnPay} className="w-full bg-black text-white py-4 px-6 rounded-xl font-semibold text-lg mt-9 hover:bg-white hover:text-black hover:border-black border border-transparent transition-colors">
               VnPay Payment
+            </button>
+              <button onClick={handleCancelOrder} className="w-full bg-red-600 text-white py-4 px-6 rounded-xl font-semibold text-lg mt-9 hover:bg-white hover:text-black hover:border-black border border-transparent transition-colors">
+              Cancel Order
             </button>
             <p className="text-center text-gray-500 text-sm mt-3">
               You can review everything before final payment
