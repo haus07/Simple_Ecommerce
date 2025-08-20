@@ -59,8 +59,8 @@ function App() {
           {/* Route có sidebar */}
           <Route path='/checkout/done' element={ <PrivateRoute><OrderDetail/></PrivateRoute>} />
           <Route path='/checkout/:orderId' element={<PrivateRoute><CheckoutPage /></PrivateRoute>} />
-            <Route path='/cart' element={ <PrivateRoute allowRoles={['user']}><ShoppingCart/></PrivateRoute>} />
         <Route element={<SidebarLayout />}>
+            <Route path='/cart' element={ <PrivateRoute allowRoles={['user']}><ShoppingCart/></PrivateRoute>} />
             <Route path="/main" element={<MainContent />} />
             <Route path="/product/:id" element={<ProductPage />} />
         </Route>

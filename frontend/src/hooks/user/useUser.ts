@@ -28,6 +28,11 @@ return useMutation({
         queryClient.invalidateQueries({
             queryKey:['users']
         })
+    },
+    onError: (error) => {
+        if (error.response) {
+            alert(error.response.data.message)
+        }
     }
 })
     

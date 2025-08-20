@@ -8,6 +8,7 @@ import { OrderService } from './../order/order.service';
 import { NotFoundError } from 'rxjs';
 import { UpdateOrderDto } from '../order/dtos/update.dto';
 import { OrderStatus } from 'src/common/enums/order-status.enum';
+import { CartService } from '../cart/cart.service';
 
 @Controller({
   path: 'payment',
@@ -16,7 +17,8 @@ import { OrderStatus } from 'src/common/enums/order-status.enum';
   )
 export class PaymentController {
   constructor(private readonly paymentService: PaymentService,
-              private readonly orderService:OrderService) {
+    private readonly orderService: OrderService,
+    private readonly cartService:CartService) {
   }
   @Get('create')
   async createPayment(@Query('amount') amount: number,
@@ -54,10 +56,16 @@ export class PaymentController {
 
     const updateDtoSucceeded: UpdateOrderDto = { status: OrderStatus.SUCCEEDED }
     const updateDtoWaitForPaid : UpdateOrderDto = {status:OrderStatus.WAITFORPAID}
-    
+    console.log(order)
+
     if (vnp_ResponseCode === '00') {
+      console.log('hahahahaha')
       await this.orderService.updateOrder(order.id, updateDtoSucceeded)
       order.status = updateDtoSucceeded.status
+      console.log('hahahha')
+      console.log(order.items.map(item=>item.id))
+      await this.cartService.deleteItems(order.user.id, order.items.map(item => item.originalCartItemId))
+      console.log('hahahah')
     } else {
       await this.orderService.updateOrder(order.id, updateDtoWaitForPaid)
       order.status = updateDtoWaitForPaid.status

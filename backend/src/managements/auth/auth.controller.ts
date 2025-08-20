@@ -17,7 +17,7 @@ export class AuthController {
   @UsePipes(new ValidationPipe())
   async register(@Body() dto:RegisterDto){
     await this.authService.createUser(dto)
-    return { message:'Dang ki thanh cong'}
+    return { message:'Đăng kí thành công'}
   }
 
   @UseGuards(AuthGuard('local'))

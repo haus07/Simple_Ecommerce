@@ -127,11 +127,19 @@ export class UserService {
     }
 
     async updateUser(id: number, data: Partial<User>) {
-        const user = await this.userRespo.findOneBy({ id })
-        if (!user) throw new NotFoundException('Không tìm thấy người dùng')
-        
-        Object.assign(user, data)
-        return await this.userRespo.save(user)
+        try {
+            
+            const user = await this.userRespo.findOneBy({ id })
+            if (!user) throw new NotFoundException('Không tìm thấy người dùng')
+                
+                Object.assign(user, data)
+                return await this.userRespo.save(user)
+            }catch(error){
+            if (error.code === '23505') {
+            throw new BadRequestException("Tên đăng nhập hoặc email đã tồn tại")
+            }
+            throw error
+       }
     }
 
     async findById(id: number) :Promise<User|null>{

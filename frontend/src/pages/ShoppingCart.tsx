@@ -113,7 +113,8 @@ export default function ShoppingCart() {
   const selectedItems = cartItems.filter(item => item.selected);
   const checkout = selectedItems.map(item => ({
     quantity: item.quantity,
-    productId:item.product.id
+    productId: item.product.id,
+    originalCartItemId:item.id
   }))
   const subtotal = selectedItems.reduce((sum, item) => {
     const price = parseFloat(item.product.price) || 0;
@@ -150,7 +151,6 @@ export default function ShoppingCart() {
 
   return (
     <>
-      <Navbar/>
     <div className="h-screen  bg-gray-50">
       {/* Header */}
       <div className="bg-white shadow-sm border-b ">
@@ -196,7 +196,9 @@ export default function ShoppingCart() {
                 </div>
                 <h3 className="text-lg font-medium text-gray-900 mb-2">Your cart is empty</h3>
                 <p className="text-gray-500 mb-4">Add some items to get started</p>
-                <button className="bg-orange-500 text-white px-6 py-2 rounded-lg hover:bg-orange-600 transition-colors">
+                  <button onClick={() => {
+                    navigate('/main')
+                }} className="bg-orange-500 text-white px-6 py-2 rounded-lg hover:bg-orange-600 transition-colors">
                   Continue Shopping
                 </button>
               </div>

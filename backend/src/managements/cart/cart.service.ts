@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Cart } from 'src/entities/cart.entity';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { AddToCartDto } from './dtos/addToCart.dto';
 import { CartItems } from 'src/entities/cart-items.entity';
 import { UpdateQuantity } from './dtos/updateQuantity.dto';
@@ -93,6 +93,33 @@ export class CartService {
     });
         return {
             count:count
+        }
+    }
+
+    async deleteItems(userId: number, itemIds: number[]) {
+        try {
+            const cart = await this.cartRepo.findOne({
+                where: {
+                    user: { id:userId }
+                }
+            })
+            if (!cart) {
+                throw new NotFoundException("Không tìm thấy giỏ hàng của người dùng")
+            }
+            console.log(cart)
+            console.log(itemIds)
+            const removeResult = await this.cartItemsRepo.delete({
+                    id: In(itemIds),
+                    cart:{id:cart.id}
+                
+            })
+            if (removeResult.affected === 0) {
+                throw new NotFoundException("Không tìm thấy sản phẩm để xóa")
+            }
+        } catch (error) {
+              // Xử lý lỗi một cách rõ ràng
+        console.error("Lỗi khi xóa sản phẩm khỏi giỏ hàng:", error);
+        throw error; // Ném lỗi để controller xử lý
         }
     }
 }
