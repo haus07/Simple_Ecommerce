@@ -16,13 +16,19 @@ export class OrderItems{
     
     @Column({ type: 'decimal' })
     quantity: number
+  
+    @Column({
+      type: 'decimal',
+      default:0
+    })
+    originalCartItemId:number  
 
     @CreateDateColumn()
-      createdAt: Date
+    createdAt: Date
     
-      @UpdateDateColumn()
-      updateAt: Date
+    @UpdateDateColumn()
+    updateAt: Date
       
-      @DeleteDateColumn()
-      deletedAt?: Date
+    @DeleteDateColumn()
+    deletedAt?: Date
 }

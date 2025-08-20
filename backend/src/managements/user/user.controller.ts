@@ -52,7 +52,14 @@ async softDeleteUser(@Param('id', ParseIntPipe) id: number) {
   @Roles('admin','user')
   @Patch(':id')
   async editUser(@Param('id',ParseIntPipe) id: number,
-                 @Body() body:UpdateUserDto) {
+    @Body() body: UpdateUserDto) {
+    console.log(body)
+    if (body.email !== undefined) {
+      const isEmailExist = await this.userService.IsEmailExist(body.email)
+      if (isEmailExist) {
+        throw new BadRequestException("Email dã tồn tại")
+      }
+    }
     return this.userService.updateUser(id,body)
   }
 
@@ -60,17 +67,25 @@ async softDeleteUser(@Param('id', ParseIntPipe) id: number) {
   @Roles('admin')
   @Post('')
   async adminCreate(@Body() dto:AdminRegisterDto) {
-    const isUsernameExist = await this.userService.IsUserNameExist(dto.username)
-    if (isUsernameExist) {
-      throw new BadRequestException('Username da ton tai')
-    }
-    
-    const isEmailExist = await this.userService.IsEmailExist(dto.email)
-    if (isEmailExist) {
-      throw new BadRequestException('Email da ton tai')
-    }
-
-    return await this.userService.adminCreate(dto)
+    try {
+      
+      const isUsernameExist = await this.userService.IsUserNameExist(dto.username)
+      if (isUsernameExist) {
+        throw new BadRequestException('Tên đăng nhập đã tồn tại')
+      }
+      
+      const isEmailExist = await this.userService.IsEmailExist(dto.email)
+      if (isEmailExist) {
+        throw new BadRequestException('Email đã tồn tại')
+      }
+      
+      return await this.userService.adminCreate(dto)
+    }catch(error){
+            if (error.code === '23505') {
+            throw new BadRequestException("Tên đăng nhập hoặc email đã tồn tại")
+            }
+            throw error
+       }
   }
 
   @UseGuards(AuthGuard('jwt'), RolesGuard)

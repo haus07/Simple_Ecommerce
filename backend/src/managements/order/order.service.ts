@@ -27,7 +27,8 @@ export class OrderService {
 
     async getOrderByOrderCode(orderCode:string) {
         const order = this.orderRepo.findOne({
-            where:{orderCode}
+            where: { orderCode },
+            relations: ['user','items']
         })
         if (!order) {
             throw new NotFoundException('Không tìm thấy đơn hàng')
@@ -61,7 +62,8 @@ export class OrderService {
                 }
                 return this.orderItemsRepo.create({
                     product,
-                    quantity:item.quantity
+                    quantity: item.quantity,
+                    originalCartItemId:item.originalCartItemId
                 })
             })
         )

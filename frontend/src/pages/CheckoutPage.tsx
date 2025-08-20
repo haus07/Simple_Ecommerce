@@ -130,7 +130,7 @@ export default function CheckoutPage() {
       })
       if (response.data.success === true) {
         const newOrderId = response.data.order.id
-        navigate(`/checkout/done/${newOrderId}`)
+        navigate(`/checkout/done`)
         dispatch(setItems(response.data.order))
       }
     } catch (error) {

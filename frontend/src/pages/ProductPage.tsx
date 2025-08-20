@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import api from "../axios/axios"
+import { useDispatch } from "react-redux"
+import { increment } from "../features/cart/cartSlice"
 
 // Mock interfaces for demo purposes
 interface Product {
@@ -39,8 +41,8 @@ const ProductPage = () => {
 
     // Mock functions - replace with your actual implementations
     const navigate = (path: string | number) => console.log('Navigate to:', path)
-    const dispatch = (action: any) => console.log('Dispatch:', action)
     const { id } = useParams<{ id: string }>()
+    const dispatch = useDispatch()
 
     // Your original useEffect logic would go here
     useEffect(() => {
@@ -83,7 +85,6 @@ const ProductPage = () => {
         }
         
         // Mock success for demo
-        alert('Product added to cart!')
     }
     
     if (loading) {

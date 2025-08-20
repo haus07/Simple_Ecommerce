@@ -31,6 +31,7 @@ const EditUserModal: React.FC<EditUserModalProps> = ({ isOpen, onClose, userData
     username: '',
     email: '',
     phone: '',
+    status:'active'
   });
   
   // Cập nhật formData mỗi khi userData thay đổi (khi modal được mở với user mới)
@@ -41,6 +42,7 @@ const EditUserModal: React.FC<EditUserModalProps> = ({ isOpen, onClose, userData
         username: userData.username,
         email: userData.email,
         phone: userData.phone,
+        status:'active'
       });
     }
   }, [userData]);
@@ -69,7 +71,6 @@ const EditUserModal: React.FC<EditUserModalProps> = ({ isOpen, onClose, userData
     try {
       // Đã sửa: Sử dụng api.patch và endpoint user/edit
       updateUserMutation.mutate({ id:formData.id,body:formData})
-      alert("Cập nhật người dùng thành công")
       onUserUpdated(); // Gọi callback để refresh danh sách người dùng trong AdminDashboardPage
       
       onClose(); // Đóng modal
