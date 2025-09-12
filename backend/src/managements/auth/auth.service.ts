@@ -45,10 +45,11 @@ export class AuthService {
     }
 
     async login(user: any) {
+        console.log(user)
         const payload = {
             username: user.username,
             sub: user.id,
-            roles: user.roles.map((r) => r.name)
+            roles: user?.roles.map((r) => r.name)
         }
         const accessToken = await this.jwtService.signAsync(payload)
         return {accessToken:accessToken}
