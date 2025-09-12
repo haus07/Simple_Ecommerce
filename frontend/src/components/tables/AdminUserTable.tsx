@@ -234,7 +234,10 @@ export default function AdminUserTable({
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         userData={selectedUser}
-        onUserUpdated={() => setIsModalOpen(false)}
+        onUserUpdated={() => {
+          alert('Cập nhật người dùng thành công')
+          setIsModalOpen(false)
+        }}
         updateUserMutation={()=>updateUserMutation}
       />
       </div>

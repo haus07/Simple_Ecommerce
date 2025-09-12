@@ -3,6 +3,8 @@ import api from '../axios/axios';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { Eye, EyeOff, User, Lock } from 'lucide-react';
+import { FcGoogle } from 'react-icons/fc'
+import { FaGithub } from "react-icons/fa"
 
 type LoginFormData = {
   username: string;
@@ -11,7 +13,7 @@ type LoginFormData = {
 
 const LoginForm: React.FC = () => {
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { login , setUser} = useAuth();
   const [showPassword, setShowPassword] = useState(false);
 
   const [formData, setFormData] = useState<LoginFormData>({
@@ -58,29 +60,41 @@ const LoginForm: React.FC = () => {
     navigate('/signup')
   }
 
+  const handleOauthGoogle =  () => {
+    window.location.href =  'http://localhost:3000/api/v1/auth/google/login'
+  }
+
   useEffect(() => {
     const verifyLogin = async () => {
       const accessToken = localStorage.getItem('access_Token');
-      if (accessToken) {
-        try {
+     
+      const header = accessToken ? {Authorization: `Bearer ${accessToken}`} : {}
+      try {
+          console.log(header)
           const response = await api.get('api/v1/users/me', {
-            headers:{Authorization:`Bearer ${accessToken}`}
+            headers: header,
+            withCredentials:true
           });
+          console.log(response.data)
+          
           const userData = response.data.userWithoutPassword
+          console.log(userData)
+          setUser(userData)
+        
           const hasAdminRole = userData?.roles?.map(role=>role.name).includes('admin')
 
           if (hasAdminRole) {
             navigate('/admin', { replace: true });
           } else {
             navigate('/main', { replace: true });
-          }
+        }
         } catch (error) {
-          if (error.response.status === 401) {
+          if (error.response?.status === 401) {
           localStorage.removeItem('access_Token');
             navigate('/login')
           }          
-        }
-      }
+      } 
+      
     };
     verifyLogin();
   }, []);
@@ -178,7 +192,34 @@ const LoginForm: React.FC = () => {
               )}
             </button>
           </form>
-
+               <div className="flex flex-row items-center gap-4 mt-8 justify-center">
+                              <div onClick={()=>handleOauthGoogle()} className="
+                            w-10
+                            h-10
+                            bg-gray-300
+                            rounded-full
+                            flex
+                            items-center
+                            justify-center
+                            cursor-pointer
+                            hover:opacity-80
+                            transition">
+                            <FcGoogle size={30} />
+                            </div>
+                            <div className="
+                            w-10
+                            h-10
+                            bg-gray-300
+                            rounded-full
+                            flex
+                            items-center
+                            justify-center
+                            cursor-pointer
+                            hover:opacity-80
+                            transition">
+                            <FaGithub size={30} />
+                            </div>
+                      </div>
           {/* Sign up link */}
           <div className="mt-6 text-center">
             <p className="text-gray-600 text-sm">

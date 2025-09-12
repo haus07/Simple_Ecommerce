@@ -146,7 +146,7 @@ export default function CheckoutPage() {
       if (!accesToken) {
         navigate('/login')
       }
-      const response = await api.patch(`api/v1/orders/${orderId}`, {
+      const response = await api.patch(`api/v1/orders/`, {
         status:'canceled',
       }, {
         headers: { Authorization: `Bearer ${accesToken}` }

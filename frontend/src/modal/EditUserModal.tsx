@@ -22,6 +22,7 @@ interface EditUserModalProps {
 
 const EditUserModal: React.FC<EditUserModalProps> = ({ isOpen, onClose, userData, onUserUpdated }) => {
   const navigate = useNavigate();
+  const [originalData, setOriginalData] = useState<EditForm | null>(null);
   const accessToken = localStorage.getItem('access_Token');
   const updateUserMutation = useUpdateUser(accessToken)
   
@@ -36,16 +37,18 @@ const EditUserModal: React.FC<EditUserModalProps> = ({ isOpen, onClose, userData
   
   // Cập nhật formData mỗi khi userData thay đổi (khi modal được mở với user mới)
   useEffect(() => {
-    if (userData) {
-      setFormData({
-        id: userData.id,
-        username: userData.username,
-        email: userData.email,
-        phone: userData.phone,
-        status:'active'
-      });
-    }
-  }, [userData]);
+  if (userData) {
+    const initData = {
+      id: userData.id,
+      username: userData.username,
+      email: userData.email,
+      phone: userData.phone,
+    };
+    setFormData(initData);
+    setOriginalData(initData); // lưu lại bản gốc
+  }
+}, [userData]);
+
 
   // Nếu modal không mở thì không render gì cả
   if (!isOpen) {
@@ -67,10 +70,17 @@ const EditUserModal: React.FC<EditUserModalProps> = ({ isOpen, onClose, userData
       console.error("Không có ID người dùng để cập nhật.");
       return;
     }
-
+     const updatedFields: Partial<EditForm> = {};
+  Object.keys(formData).forEach((key) => {
+    const k = key as keyof EditForm;
+    if (formData[k] !== originalData?.[k]) {
+      updatedFields[k] = formData[k]; // chỉ giữ field thay đổi
+    }
+  });
+    console.log(updatedFields)
     try {
       // Đã sửa: Sử dụng api.patch và endpoint user/edit
-      updateUserMutation.mutate({ id:formData.id,body:formData})
+      updateUserMutation.mutate({ id:formData.id,body:{...updatedFields,status:'active'}})
       onUserUpdated(); // Gọi callback để refresh danh sách người dùng trong AdminDashboardPage
       
       onClose(); // Đóng modal

@@ -74,6 +74,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       const accessToken = localStorage.getItem('access_Token');
       if (accessToken) {
         try {
+          console.log('testuser thanh cong do google')
           await fetchUser(accessToken);
         } catch (error) {
 

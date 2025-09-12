@@ -8,13 +8,17 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     constructor(private readonly userService:UserService) {
     
         super({
-            jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+            jwtFromRequest: ExtractJwt.fromExtractors([
+                ExtractJwt.fromAuthHeaderAsBearerToken(),
+                (req)=>req?.cookies?.access_token 
+            ]),
             ignoreExpiration: false,
             secretOrKey:'hau123'
         })
     }
 
     async validate(payload: any) {
+        console.log("Payload hien tai la ------",payload)
         const user = await this.userService.findByName(payload.username)
 
         if (!user) {

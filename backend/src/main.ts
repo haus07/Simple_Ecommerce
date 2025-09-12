@@ -4,10 +4,14 @@ import { AppModule } from './app.module';
 import * as dotenv from 'dotenv'
 import { postgresDataSource } from './typeorm/appDataSource';
 import { ValidationPipe, VersioningType } from '@nestjs/common';
+import * as cookieParser from 'cookie-parser'
 
 async function bootstrap() {
   await postgresDataSource.initialize();
   const app = await NestFactory.create(AppModule)
+
+  app.use(cookieParser())
+
  app.enableCors({
   origin: 'http://localhost:5173',
   credentials: true,

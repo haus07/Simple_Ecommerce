@@ -14,6 +14,7 @@ import { Cart } from 'src/entities/cart.entity';
 import { PaginateResult } from '../order/interface/PaginateResult';
 import { HttpException,HttpStatus} from '@nestjs/common';
 import { SearchAndFilterUserDto } from './dtos/searchAndfilterUser.dto';
+import { GoogleRegisterDto } from './dtos/GoogleRegisterDto.dto';
 
 @Injectable()
 export class UserService {
@@ -29,14 +30,27 @@ export class UserService {
         const role = await this.roleRepo.findByName('user')
         if (!role) {
                 throw new NotFoundException("Không có vai trò này")
-            }
-        const hash = await  hashPassword(data.password)    
+       }
+                  const hash = await  hashPassword(data.password)   
+             
        const dataSave = await this.userRespo.create({ ...data, password: hash, roles: [role] })
         await this.userRespo.save(dataSave)
        const cart = await this.cartRepo.create({ user: dataSave })
        await this.cartRepo.save(cart)
        return {message:"Đăng kí thành công"}
 
+    }
+
+    async createGoogleUser(data:GoogleRegisterDto) {
+        const role = await this.roleRepo.findByName('user')
+        if (!role) {
+            throw new NotFoundException("Không có vai trò này")
+        }
+        const dataSave =  this.userRespo.create({ ...data, roles: [role] })
+        await this.userRespo.save(dataSave)
+       const cart = await this.cartRepo.create({ user: dataSave })
+       await this.cartRepo.save(cart)
+       return dataSave
     }
 
     async adminCreate(data: AdminRegisterDto) {
@@ -145,5 +159,17 @@ export class UserService {
     async findById(id: number) :Promise<User|null>{
         const user = await this.userRespo.findOneBy({ id })
         return user
+    }
+
+    async findByGoogleId(id: string): Promise<User|null>{
+        const userGoogle = await this.userRespo.findOne({
+            where: {
+                googleId:id
+            }
+        })
+        if (!userGoogle) {
+            return null
+        }
+        return userGoogle
     }
 }

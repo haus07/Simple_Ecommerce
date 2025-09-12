@@ -16,6 +16,7 @@ import CheckoutPage from './pages/CheckoutPage';
 import OrderDetail from './pages/OrderDetail';
 import UserProfilePage from './pages/UserProfilePage';
 import NotFoundPage from './pages/NotFoundPage';
+import CallbackPage from './pages/CallbackPage';
 
 // Route bảo vệ
 const PrivateRoute = ({ children, adminOnly = false, allowRoles = [] }) => {
@@ -64,10 +65,11 @@ function App() {
             <Route path="/main" element={<MainContent />} />
             <Route path="/product/:id" element={<ProductPage />} />
         </Route>
+          <Route path='/callback' element={ <CallbackPage/>} />  
           {/* Fallback */}
           <Route path="*" element={<NotFoundPage/>} />
         </Routes>
-          
+            
       </AuthProvider>
     </BrowserRouter>
   );

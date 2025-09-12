@@ -7,11 +7,14 @@ import { JwtModule } from '@nestjs/jwt';
 import { LocalStrategy } from 'src/stategies/local.strategy';
 import { JwtStrategy } from 'src/stategies/jwt.strategy';
 import 'dotenv/config'
+import { GoogleStrategy } from 'src/stategies/google.stragery';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { User } from 'src/entities/user.entity';
 
 @Module({
   controllers: [AuthController],
-  providers: [AuthService,LocalStrategy,JwtStrategy],
-  imports: [UserModule, PassportModule, JwtModule.register({
+  providers: [AuthService,LocalStrategy,JwtStrategy,GoogleStrategy],
+  imports: [TypeOrmModule.forFeature([User]),UserModule, PassportModule.register({session:false}), JwtModule.register({
     global: true,
     secret: process.env.SECRET,
     signOptions: {
