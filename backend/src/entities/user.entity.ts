@@ -3,6 +3,7 @@ import { Role } from "./role.entity";
 import { UserStatus } from "../common/enums/user-status.enum";
 import { Order } from "./order.entity";
 import { Exclude } from "class-transformer";
+import { RefreshToken } from "./refresh_token.entity";
 
 export enum ProviderLogin  {
   LOCAL = 'local',
@@ -59,6 +60,9 @@ export class User{
   
   @OneToMany(() => Order, order => order.user)
   orders: Order[]
+
+  @OneToMany(() => RefreshToken, refreshToken => refreshToken.user)
+  refreshTokens: RefreshToken[]
   
 
   @CreateDateColumn()
@@ -70,5 +74,6 @@ export class User{
     @DeleteDateColumn()
     deletedAt?: Date
 }
+
 
 

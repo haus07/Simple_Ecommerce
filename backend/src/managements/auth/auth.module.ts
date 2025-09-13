@@ -10,11 +10,12 @@ import 'dotenv/config'
 import { GoogleStrategy } from 'src/stategies/google.stragery';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from 'src/entities/user.entity';
+import { RefreshToken } from 'src/entities/refresh_token.entity';
 
 @Module({
   controllers: [AuthController],
   providers: [AuthService,LocalStrategy,JwtStrategy,GoogleStrategy],
-  imports: [TypeOrmModule.forFeature([User]),UserModule, PassportModule.register({session:false}), JwtModule.register({
+  imports: [TypeOrmModule.forFeature([User,RefreshToken]),UserModule, PassportModule.register({session:false}), JwtModule.register({
     global: true,
     secret: process.env.SECRET,
     signOptions: {
