@@ -7,6 +7,7 @@ import { CartItems } from "../entities/cart-items.entity";
 import { Order } from "src/entities/order.entity";
 import { OrderItems } from "src/entities/order-items.entity";
 import "dotenv/config"
+import { RefreshToken } from "src/entities/refresh_token.entity";
 
 export const postgresDataSource = new DataSource({
   type: "postgres",
@@ -15,7 +16,7 @@ export const postgresDataSource = new DataSource({
   username: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
-  entities: [User, Role, Product, Cart, CartItems,Order,OrderItems],
+  entities: [User, Role, Product, Cart, CartItems,Order,OrderItems,RefreshToken],
   synchronize: true,
 });
 console.log({User, Role, Product, Cart, CartItems});

@@ -16,6 +16,7 @@ import { OrderItems } from './entities/order-items.entity';
 import { Order } from './entities/order.entity';
 import { OrderModule } from './managements/order/order.module';
 import { PaymentModule } from './managements/payment/payment.module';
+import { RefreshToken } from './entities/refresh_token.entity';
 
 
 @Module({
@@ -28,7 +29,7 @@ import { PaymentModule } from './managements/payment/payment.module';
   username: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
-  entities: [User, Role, Product, Cart, CartItems,Order,OrderItems],
+  entities: [User, Role, Product, Cart, CartItems,Order,OrderItems,RefreshToken],
   synchronize: true,
 }),
 
