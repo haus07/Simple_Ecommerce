@@ -153,13 +153,7 @@ export class AuthService {
 
 
     //update refresh token neu nhu refresh token het han
-    async updateRefreshToken() {
-        const rawToken = this.generateToken()
-        const hashToken = this.hashToken(rawToken)
-        const updateToken = await this.refreshTokenRepo.update({
-
-        })
-    }
+   
 
     
 }

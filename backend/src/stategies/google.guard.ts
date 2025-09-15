@@ -8,6 +8,6 @@ export class GoogleOauthGuard extends AuthGuard('google') {
         const active = (await super.canActivate(context)) as boolean
         const request = context.switchToHttp().getRequest()
         await super.logIn(request)
-        return active;
+        return active; 
     }
 }
