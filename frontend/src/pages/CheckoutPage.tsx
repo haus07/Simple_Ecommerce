@@ -146,14 +146,14 @@ export default function CheckoutPage() {
       if (!accesToken) {
         navigate('/login')
       }
-      const response = await api.patch(`api/v1/orders/`, {
+      const response = await api.patch(`api/v1/orders/${orderId}`, {
         status:'canceled',
       }, {
         headers: { Authorization: `Bearer ${accesToken}` }
       })
       if (response.data.success === true) {
         const newOrderId = response.data.order.id
-        navigate(`/checkout/done/${newOrderId}`)
+        navigate(`/checkout/done`)
         dispatch(setItems(response.data.order))
       }
     } catch (error) {

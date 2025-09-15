@@ -17,6 +17,7 @@ import { Order } from './entities/order.entity';
 import { OrderModule } from './managements/order/order.module';
 import { PaymentModule } from './managements/payment/payment.module';
 import { RefreshToken } from './entities/refresh_token.entity';
+import { LoggerService } from './utils/log_service.service';
 
 
 @Module({
@@ -36,7 +37,7 @@ import { RefreshToken } from './entities/refresh_token.entity';
     UserModule,AuthModule,ProductModule,CartModule,OrderModule,PaymentModule
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService,LoggerService],
   
 })
 export class AppModule {}
